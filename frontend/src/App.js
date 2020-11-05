@@ -11,13 +11,13 @@ function App() {
   const [newSentimentRating, setNewSentimentRating] = useState("");
 
   useEffect(()=> {
-    Axios.get("http://localhost:3001/api/get").then((response)=> {
+    Axios.get("http://localhost:3001/watchlist/api/get").then((response)=> {
       setWatchListMembers(response.data);
     });
   }, []);
 
   const submitWatchlist = () => {
-    Axios.post("http://localhost:3001/api/insert", {
+    Axios.post("http://localhost:3001/watchlist/api/insert", {
       stockSymbol: stockSymbol, 
       sentimentRating: sentimentRating, 
       patternType: patternType
@@ -28,11 +28,11 @@ function App() {
   };
 
   const deleteWatchlist = (member) => {
-    Axios.delete(`http://localhost:3001/api/delete/${member}`);
+    Axios.delete(`http://localhost:3001/watchlist/api/delete/${member}`);
   }
 
   const updateWatchlist = (member) => {
-    Axios.put("http://localhost:3001/api/update", {
+    Axios.put("http://localhost:3001/watchlist/api/update", {
       stockSymbol: member, 
       sentimentRating: newSentimentRating,
       patternType: patternType
