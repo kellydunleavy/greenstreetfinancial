@@ -1,8 +1,10 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
+const app2 = express();
 const mysql = require("mysql");
 const cors = require('cors');
+const mongoose = require("mongoose");
 
 const db = mysql.createPool({
     host: "localhost",
@@ -12,8 +14,18 @@ const db = mysql.createPool({
 });
 
 app.use(cors());
+app2.use(cors());
 app.use(express.json());
+app2.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+const uri = "mongodb+srv://<username>:<password>@cluster0.baluh.mongodb.net/cs411_finalproject?retryWrites=true&w=majority";
+mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true }
+);
+const connection = mongoose.connection;
+connection.once('open', () => {
+  console.log("MongoDB database connection established successfully");
+})
 
 
 // WATCHLIST
@@ -200,4 +212,10 @@ app.put("/user/api/update", (req, res)=> {
 
 app.listen(3001, () => {
     console.log("running on port 3001");
+});
+const dashboardsRouter = require('./routes/dashboards');
+app2.use('/dashboards', dashboardsRouter);
+
+app2.listen(3004, () => {
+    console.log("running on port 3004");
 });
